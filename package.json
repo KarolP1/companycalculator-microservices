@@ -1,0 +1,89 @@
+{
+  "name": "companycalculator-microservices",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "concurrently -c 'auto' 'npm run build_*'",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "start": "concurrently -c 'auto' 'npm run start_*'",
+    "start:dev": "concurrently -c 'auto' 'npm run start:dev_*'",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "concurrently -c 'auto' 'npm run start:prod_*'",
+    "build_gateway": "nest build gateway",
+    "build_users_m": "nest build users_m",
+    "start_gateway": "nest start gateway",
+    "start_users_m": "nest start users_m",
+    "start:dev_gateway": "nest start gateway --watch",
+    "start:dev_users_m": "nest start users_m --watch",
+    "start:prod_gateway": "node dist/apps/gateway/main",
+    "start:prod_users_m": "node dist/apps/users_m/main"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.0.1",
+    "@nestjs/mapped-types": "*",
+    "@nestjs/microservices": "^11.0.20",
+    "@nestjs/platform-express": "^11.0.1",
+    "ioredis": "^5.6.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.18.0",
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.0.1",
+    "@swc/cli": "^0.6.0",
+    "@swc/core": "^1.10.7",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.10.7",
+    "@types/supertest": "^6.0.2",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.2",
+    "globals": "^16.0.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.4.2",
+    "source-map-support": "^0.5.21",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": ".",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@cc/common(|/.*)$": "<rootDir>/libs/common/src/$1",
+      "^@cc/common/message-pattern-generator(|/.*)$": "<rootDir>/libs/common/message-pattern-generator/src/$1",
+      "^@cc/message-pattern-generator(|/.*)$": "<rootDir>/libs/message-pattern-generator/src/$1"
+    }
+  }
+}

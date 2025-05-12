@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto, User } from 'libs/common/src/entities';
+import { CreateUserDto, User, UserRole } from 'libs/common/src/entities';
 import { updateUserDto } from 'libs/common/src/entities/user/dtos/update_user.dto';
 
 @Injectable()
@@ -11,22 +11,25 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) { }
 
+  //WORKS
   getTest(): string {
     return `Hello World from user service!`;
   }
 
-  // Create a new user
+  // Create a new user //WORKS
   async createUser(createUserDto: CreateUserDto) {
     const { email, passwordHash, roles, restaurantId } = createUserDto;
 
     // Check if the user already exists
     const existingUser = await this.userModel.findOne({ email, });
+
     if (existingUser) {
       throw new BadRequestException('User already exists');
     }
+    const salt = await bcrypt.genSalt(10);
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(passwordHash, 10);
+    const hashedPassword = await bcrypt.hash(passwordHash, salt);
 
     // Create the new user
     const newUser = new this.userModel({
@@ -41,7 +44,7 @@ export class UsersService {
     return { message: 'User created successfully', user: newUser };
   }
 
-  // Get user by email
+  // Get user by email //WORKS
   async getUserByEmail(email: string) {
     const user = await this.userModel.findOne({ email });
     if (!user) {
@@ -50,7 +53,7 @@ export class UsersService {
     return user;
   }
 
-  // Get user by ID
+  // Get user by ID //WORKS
   async getUserById(userId: string) {
     const user = await this.userModel.findById(userId);
     if (!user) {
@@ -59,9 +62,9 @@ export class UsersService {
     return user;
   }
 
-  // Update user details
-  async updateUser(userId: string, updateUserDto: updateUserDto) {
-    const user = await this.userModel.findById(userId);
+  // Update user details //WORKS
+  async updateUser(id: string, updateUserDto: updateUserDto) {
+    const user = await this.userModel.findById(id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -74,12 +77,14 @@ export class UsersService {
     return { message: 'User updated successfully', user };
   }
 
-  // Change user password
+  // Change user password  //WORKS
   async changePassword(userId: string, oldPassword: string, newPassword: string) {
     const user = await this.userModel.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
+
+    console.log('User found:', user.passwordHash);
 
     // Check if old password matches
     const isMatch = await bcrypt.compare(oldPassword, user.passwordHash);
@@ -96,7 +101,7 @@ export class UsersService {
     return { message: 'Password changed successfully' };
   }
 
-  // Delete a user
+  // Delete a user //WORKS
   async deleteUser(userId: string) {
     const user = await this.userModel.findById(userId);
     if (!user) {
@@ -107,8 +112,9 @@ export class UsersService {
     return { message: 'User deleted successfully' };
   }
 
-  // Update user roles
-  async updateRoles(userId: string, roles: string[]) {
+  // Update user roles //WORKS
+  async updateRoles(userId: string, roles: UserRole[]) {
+    console.log('Updating roles for user:', userId, 'to roles:', roles);
     const user = await this.userModel.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');

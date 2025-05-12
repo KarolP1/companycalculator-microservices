@@ -65,6 +65,15 @@
         "tsConfigPath": "apps/gateway/tsconfig.app.json"
       }
     },
+    "m_auth": {
+      "type": "application",
+      "root": "apps/m_auth",
+      "entryFile": "main",
+      "sourceRoot": "apps/m_auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/m_auth/tsconfig.app.json"
+      }
+    },
     "message-pattern-generator": {
       "type": "library",
       "root": "libs/message-pattern-generator",

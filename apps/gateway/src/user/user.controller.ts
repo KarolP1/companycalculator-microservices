@@ -1,5 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, Logger } from '@nestjs/common';
-import { UserService } from './user.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Inject,
+  Logger,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
   createUserMessagePattern,
@@ -8,58 +17,106 @@ import {
   updateUserMessagePattern,
   deleteUserMessagePattern,
   getUsersInRestaurantMessagePattern,
+  changePasswordMessagePattern,
 } from '@cc/common';
-import { CreateUserDto } from 'libs/common/src/entities';
+import { CreateUserDto, UserRole } from 'libs/common/src/entities';
 import { updateUserDto } from 'libs/common/src/entities/user/dtos/update_user.dto';
-
+import { handleMicroserviceError } from '@cc/error-handler';
 
 @Controller('user')
 export class UserController {
+  private readonly logger = new Logger(UserController.name);
 
-  logger = new Logger(UserController.name);
-  constructor(
+  constructor(@Inject('USERS_SERVICE') private client: ClientProxy) { }
 
-    private readonly userService: UserService,
-    @Inject('USERS_SERVICE') private client: ClientProxy
-  ) { }
-
-  @Get()
+  // Test endpoint //WORKS
+  @Get('/test')
   getTest() {
-    this.logger.log('get Hello World from user service!');
-
-    return "Hello World from user service!";
+    this.logger.log('GET /user/test');
+    return 'Hello World from user service!';
   }
 
+  // Create a new user //WORKS
   @Post()
   create(@Body() dto: CreateUserDto) {
-    this.logger.log('post Hello World from user service!');
-
-    return this.client.send(createUserMessagePattern, dto);
+    this.logger.log(`POST /user -> Creating user: ${dto.email}`);
+    return handleMicroserviceError(
+      this.client.send(createUserMessagePattern, dto),
+    );
   }
 
-  @Get('email/:email')
+  // Get user by email
+  @Get('email/:email') // WORKS 
   getByEmail(@Param('email') email: string) {
-    return this.client.send(getUserByEmailMessagePattern, email);
+    this.logger.log(`GET /user/email/${email}`);
+    return handleMicroserviceError(
+      this.client.send(getUserByEmailMessagePattern, { email }),
+    );
   }
 
+  // Get user by ID //WORKS
   @Get(':id')
   getById(@Param('id') id: string) {
-    return this.client.send(getUserByIdMessagePattern, id);
+    this.logger.log(`GET /user/${id}`);
+    return handleMicroserviceError(
+      this.client.send(getUserByIdMessagePattern, { userId: id }),
+    );
   }
 
+  // Update user by ID //WORKS
   @Patch(':id')
   update(@Param('id') id: string, @Body() dto: updateUserDto) {
-    return this.client.send(updateUserMessagePattern, { id, dto });
+    this.logger.log(`PATCH /user/${id}`);
+    return handleMicroserviceError(
+      this.client.send(updateUserMessagePattern, { id, dto }),
+    );
   }
 
+  // delete user by ID //WORKS
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.client.send(deleteUserMessagePattern, id);
+    this.logger.log(`DELETE /user/${id}`);
+    return handleMicroserviceError(
+      this.client.send(deleteUserMessagePattern, { userId: id }),
+    );
   }
 
+  // Change user password //WORKS
+  @Patch(':id/password')
+  changePassword(
+    @Param('id') id: string,
+    @Body('oldPassword') oldPassword: string,
+    @Body('newPassword') newPassword: string,
+  ) {
+    this.logger.log(`PATCH /user/${id}/password`);
+
+    return handleMicroserviceError(
+      this.client.send(changePasswordMessagePattern, {
+        userId: id,
+        oldPassword,
+        newPassword,
+      }),
+    );
+  }
+
+  // Update user roles //WORKS
+  @Patch(':id/roles')
+  updateRoles(@Param('id') id: string, @Body("roles") roles: UserRole[]) {
+    this.logger.log(`PATCH /user/${id}/roles`);
+    return handleMicroserviceError(
+      this.client.send(updateUserMessagePattern, { userId: id, roles }),
+    )
+  }
+
+
+  // Get users in restaurant
   @Get('restaurant/:restaurantId')
   getUsersInRestaurant(@Param('restaurantId') restaurantId: string) {
-    return this.client.send(getUsersInRestaurantMessagePattern, restaurantId);
+    this.logger.log(`GET /user/restaurant/${restaurantId}`);
+    return handleMicroserviceError(
+      this.client.send(getUsersInRestaurantMessagePattern, {
+        restaurantId,
+      }),
+    );
   }
-
 }

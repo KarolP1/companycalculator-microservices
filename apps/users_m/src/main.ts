@@ -3,6 +3,7 @@ import { UsersModule } from './users.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
+import { AllExceptionsFilter } from '@cc/error-handler/all-exceptions.filter';
 
 async function bootstrap() {
   const logger = new Logger('Users');
@@ -15,6 +16,8 @@ async function bootstrap() {
         port: Number(process.env.USERS_PORT) || 3000, // Port z env lub domyślnie 3000
       },
     });
+
+    app.useGlobalFilters(new AllExceptionsFilter("UsersMicroserviceError"));
 
     const configService = app.get(ConfigService);
     const host = configService.get('USERS_HOST', 'localhost');

@@ -3,6 +3,13 @@ import { Document, Types } from 'mongoose';
 
 export type UserDocument = User & Document;
 
+export enum UserRole {
+    Admin = 'admin',
+    Owner = 'owner',
+    Manager = 'manager',
+    Employee = 'employee',
+}
+
 @Schema({ timestamps: true })
 export class User {
     @Prop({ required: true, unique: true })
@@ -11,19 +18,23 @@ export class User {
     @Prop({ required: true })
     passwordHash: string;
 
-    @Prop({ type: [String], default: ['employee'] })
-    roles: string[]; // Możliwe: 'owner', 'manager', 'employee'
+    @Prop({
+        type: [String],
+        enum: Object.values(UserRole),
+        default: [UserRole.Employee],
+    })
+    roles: UserRole[];
 
     @Prop({ required: false })
-    name?: string; // Imię/nazwisko użytkownika
+    name?: string;
 
     @Prop({ type: Types.ObjectId, ref: 'Restaurant', required: false })
     restaurantId: Types.ObjectId;
 }
 
-
 export const UserSchema = SchemaFactory.createForClass(User);
-// Ukryj hasło przy serializacji
+
+// Hide passwordHash on serialization
 UserSchema.set('toJSON', {
     transform: (doc, ret) => {
         delete ret.passwordHash;
@@ -37,6 +48,6 @@ UserSchema.set('toObject', {
     },
 });
 
-// Indeksy
+// Indexes
 UserSchema.index({ email: 1, restaurantId: 1 }, { unique: true });
 UserSchema.index({ restaurantId: 1 });

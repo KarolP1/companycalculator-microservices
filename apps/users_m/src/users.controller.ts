@@ -11,7 +11,7 @@ import {
   updateRolesMessagePattern,
   getUsersInRestaurantMessagePattern
 } from '@cc/common';
-import { CreateUserDto } from 'libs/common/src/entities';
+import { CreateUserDto, UserRole } from 'libs/common/src/entities';
 import { updateUserDto } from 'libs/common/src/entities/user/dtos/update_user.dto';
 
 @Controller()
@@ -34,8 +34,8 @@ export class UsersController {
   }
 
   @MessagePattern(updateUserMessagePattern)
-  async updateUser(data: { userId: string, updateUserDto: updateUserDto }) {
-    return this.usersService.updateUser(data.userId, data.updateUserDto);
+  async updateUser(data: { id: string, dto: updateUserDto }) {
+    return this.usersService.updateUser(data.id, data.dto);
   }
 
   @MessagePattern(changePasswordMessagePattern)
@@ -48,8 +48,8 @@ export class UsersController {
     return this.usersService.deleteUser(data.userId);
   }
 
-  @MessagePattern(updateRolesMessagePattern)
-  async updateRoles(data: { userId: string, roles: string[] }) {
+  @MessagePattern(updateUserMessagePattern)
+  async updateRoles(data: { userId: string, roles: UserRole[] }) {
     return this.usersService.updateRoles(data.userId, data.roles);
   }
 

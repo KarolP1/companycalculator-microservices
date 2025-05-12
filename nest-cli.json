@@ -29,6 +29,15 @@
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     },
+    "common/entities": {
+      "type": "library",
+      "root": "libs/common/entities",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/entities/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/entities/tsconfig.lib.json"
+      }
+    },
     "companycalculator-microservices": {
       "type": "application",
       "root": "apps/companycalculator-microservices",
@@ -36,6 +45,15 @@
       "sourceRoot": "apps/companycalculator-microservices/src",
       "compilerOptions": {
         "tsConfigPath": "apps/companycalculator-microservices/tsconfig.app.json"
+      }
+    },
+    "error-handler": {
+      "type": "library",
+      "root": "libs/error-handler",
+      "entryFile": "index",
+      "sourceRoot": "libs/error-handler/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/error-handler/tsconfig.lib.json"
       }
     },
     "gateway": {
@@ -54,6 +72,15 @@
       "sourceRoot": "libs/message-pattern-generator/src",
       "compilerOptions": {
         "tsConfigPath": "libs/message-pattern-generator/tsconfig.lib.json"
+      }
+    },
+    "mongo": {
+      "type": "library",
+      "root": "libs/mongo",
+      "entryFile": "index",
+      "sourceRoot": "libs/mongo/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/mongo/tsconfig.lib.json"
       }
     },
     "users_m": {

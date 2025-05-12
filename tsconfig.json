@@ -20,6 +20,24 @@
     "paths": {
       "@cc/common": [
         "libs/common/src"
+      ],
+      "@cc/common/entities": [
+        "libs/common/src/entities/src"
+      ],
+      "@cc/common/entities/*": [
+        "libs/common/src/entities/src/*"
+      ],
+      "@cc/mongo": [
+        "libs/mongo/src"
+      ],
+      "@cc/mongo/*": [
+        "libs/mongo/src/*"
+      ],
+      "@cc/error-handler": [
+        "libs/error-handler/src"
+      ],
+      "@cc/error-handler/*": [
+        "libs/error-handler/src/*"
       ]
     }
   }

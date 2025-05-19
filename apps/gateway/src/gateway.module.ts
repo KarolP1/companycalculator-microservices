@@ -1,20 +1,20 @@
 import { Module } from '@nestjs/common';
-import { GatewayController } from './gateway.controller';
-import { GatewayService } from './gateway.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GlobalClientModule } from '@cc/common';
 import { UserModule } from './user/user.module';
 import { MongoModule } from '@cc/mongo';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongoModule,
     GlobalClientModule,
-    UserModule
+    UserModule,
+    AuthModule
   ],
-  controllers: [GatewayController,],
-  providers: [GatewayService],
+  controllers: [],
+  providers: [],
 })
 export class GatewayModule { }

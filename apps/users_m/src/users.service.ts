@@ -18,7 +18,7 @@ export class UsersService {
 
   // Create a new user //WORKS
   async createUser(createUserDto: CreateUserDto) {
-    const { email, passwordHash, roles, restaurantId } = createUserDto;
+    const { email, password, roles, restaurantId } = createUserDto;
 
     // Check if the user already exists
     const existingUser = await this.userModel.findOne({ email, });
@@ -28,8 +28,18 @@ export class UsersService {
     }
     const salt = await bcrypt.genSalt(10);
 
+    // Check if the password is strong enough
+    if (password.length < 6) {
+      throw new BadRequestException('Password must be at least 6 characters long');
+    }
+    // Check if the email is valid
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      throw new BadRequestException('Invalid email format');
+    }
+
     // Hash the password
-    const hashedPassword = await bcrypt.hash(passwordHash, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create the new user
     const newUser = new this.userModel({

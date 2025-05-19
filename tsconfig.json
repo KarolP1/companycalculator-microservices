@@ -21,6 +21,12 @@
       "@cc/common": [
         "libs/common/src"
       ],
+      "@cc/common/auth-parts": [
+        "libs/common/auth-parts/src"
+      ],
+      "@cc/common/auth-parts/*": [
+        "libs/common/auth-parts/src/*"
+      ],
       "@cc/common/entities": [
         "libs/common/src/entities/src"
       ],
@@ -38,6 +44,12 @@
       ],
       "@cc/mongo/*": [
         "libs/mongo/src/*"
+      ],
+      "@cc/redis": [
+        "libs/redis/src"
+      ],
+      "@cc/redis/*": [
+        "libs/redis/src/*"
       ]
     }
   }

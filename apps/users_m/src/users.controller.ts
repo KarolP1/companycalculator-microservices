@@ -25,6 +25,7 @@ export class UsersController {
 
   @MessagePattern(getUserByEmailMessagePattern)
   async getUserByEmail(data: { email: string }) {
+    console.log(data)
     return this.usersService.getUserByEmail(data.email);
   }
 

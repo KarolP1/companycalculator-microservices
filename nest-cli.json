@@ -29,6 +29,15 @@
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     },
+    "common/auth-parts": {
+      "type": "library",
+      "root": "libs/common/auth-parts",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/auth-parts/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/auth-parts/tsconfig.lib.json"
+      }
+    },
     "common/entities": {
       "type": "library",
       "root": "libs/common/entities",
@@ -90,6 +99,15 @@
       "sourceRoot": "libs/mongo/src",
       "compilerOptions": {
         "tsConfigPath": "libs/mongo/tsconfig.lib.json"
+      }
+    },
+    "redis": {
+      "type": "library",
+      "root": "libs/redis",
+      "entryFile": "index",
+      "sourceRoot": "libs/redis/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/redis/tsconfig.lib.json"
       }
     },
     "users_m": {

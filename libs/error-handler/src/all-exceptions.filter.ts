@@ -11,7 +11,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     constructor(loggerContext = 'MicroserviceError') {
         this.logger = new Logger(loggerContext);
-        this.logger.log('AllExceptionsFilter initialized');
+        this.logger.log(loggerContext + 'ExceptionsFilter initialized');
     }
 
     catch(exception: any, host: ArgumentsHost) {

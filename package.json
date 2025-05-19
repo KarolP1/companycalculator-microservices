@@ -13,18 +13,24 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "concurrently -c 'auto' 'npm run start:prod_*'",
     "build_gateway": "nest build gateway",
+    "build_auth_m": "nest build auth_m",
     "build_users_m": "nest build users_m",
     "start_gateway": "nest start gateway",
+    "start_auth_m": "nest start auth_m",
     "start_users_m": "nest start users_m",
     "start:dev_gateway": "nest start gateway --watch",
+    "start:dev_auth_m": "nest start auth_m --watch",
     "start:dev_users_m": "nest start users_m --watch",
     "start:prod_gateway": "node dist/apps/gateway/main",
+    "start:prod_auth_m": "node dist/apps/auth_m/main",
     "start:prod_users_m": "node dist/apps/users_m/main"
   },
   "dependencies": {
+    "@nestjs-modules/ioredis": "^2.0.2",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/jwt": "^11.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/microservices": "^11.0.20",
     "@nestjs/mongoose": "^11.0.3",
@@ -97,10 +103,12 @@
     ],
     "moduleNameMapper": {
       "^@cc/common(|/.*)$": "<rootDir>/libs/common/src/$1",
+      "^@cc/common/auth-parts(|/.*)$": "<rootDir>/libs/common/auth-parts/src/$1",
       "^@cc/common/entities(|/.*)$": "<rootDir>/libs/common/entities/src/$1",
       "^@cc/common/message-pattern-generator(|/.*)$": "<rootDir>/libs/common/message-pattern-generator/src/$1",
       "^@cc/message-pattern-generator(|/.*)$": "<rootDir>/libs/message-pattern-generator/src/$1",
       "^@cc/mongo(|/.*)$": "<rootDir>/libs/mongo/src/$1",
+      "^@cc/redis(|/.*)$": "<rootDir>/libs/redis/src/$1",
       "^defaultLibraryPrefix/error-handler(|/.*)$": "<rootDir>/libs/error-handler/src/$1"
     }
   }

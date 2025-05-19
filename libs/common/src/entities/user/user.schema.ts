@@ -12,10 +12,12 @@ export enum UserRole {
 
 @Schema({ timestamps: true })
 export class User {
+    _id: Types.ObjectId;
+
     @Prop({ required: true, unique: true })
     email: string;
 
-    @Prop({ required: true })
+    @Prop({ required: true, minlength: 6 })
     passwordHash: string;
 
     @Prop({
@@ -37,13 +39,14 @@ export const UserSchema = SchemaFactory.createForClass(User);
 // Hide passwordHash on serialization
 UserSchema.set('toJSON', {
     transform: (doc, ret) => {
-        delete ret.passwordHash;
+        ret.id = ret._id;        // alias
+        delete ret.__v;          // jeśli nie chcesz wersji
         return ret;
     },
 });
+
 UserSchema.set('toObject', {
     transform: (doc, ret) => {
-        delete ret.passwordHash;
         return ret;
     },
 });
@@ -51,3 +54,4 @@ UserSchema.set('toObject', {
 // Indexes
 UserSchema.index({ email: 1, restaurantId: 1 }, { unique: true });
 UserSchema.index({ restaurantId: 1 });
+UserSchema.index({ _id: 1 });

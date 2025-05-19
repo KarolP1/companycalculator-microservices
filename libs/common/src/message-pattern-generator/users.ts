@@ -1,7 +1,7 @@
 import { generateMessagePattern } from "./generator";
 
 // Test Message Pattern
-export const testMessagePattern = generateMessagePattern({ action: 'test_user', domain: 'users' });
+export const testMessagePatternUsers = generateMessagePattern({ action: 'test_user', domain: 'users' });
 
 // Create User Message Pattern
 export const createUserMessagePattern = generateMessagePattern({ action: 'create_user', domain: 'users' });
